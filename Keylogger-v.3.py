@@ -4,7 +4,7 @@ import sys
 import requests
 from dotenv import load_dotenv
 from PIL import ImageGrab
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Key, Listener, mouse
 
 
 def ruta_recurso(nombre: str) -> str:
@@ -134,8 +134,8 @@ def click_release():
     pass
 
 
-with Listener(on_press=on_press, on_release=on_release) as listener_keys:
-    listener_keys.join()
+with Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()
 
-with Listener(on_click=on_click, click_release=click_release) as listener_click:
-    listener_click.join()
+with mouse.Listener(on_click=on_click, click_release=click_release) as listener_mouse:
+    listener_mouse.join()
