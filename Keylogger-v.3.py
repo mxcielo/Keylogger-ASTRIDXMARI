@@ -136,12 +136,8 @@ def on_release():
     pass
 
 
-def click_release():
-    pass
-
-
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
 
-with mouse.Listener(on_click=on_click, click_release=click_release) as listener_mouse:
+with mouse.Listener(on_click=on_click) as listener_mouse:
     listener_mouse.join()
