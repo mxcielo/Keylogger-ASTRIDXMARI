@@ -4,7 +4,8 @@ import sys
 import requests
 from dotenv import load_dotenv
 from PIL import ImageGrab
-from pynput.keyboard import Key, Listener, mouse
+from pynput import mouse
+from pynput.keyboard import Key, Listener
 
 
 def ruta_recurso(nombre: str) -> str:
