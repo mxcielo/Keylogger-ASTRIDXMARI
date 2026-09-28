@@ -141,5 +141,6 @@ def click_release():
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
 
+print("Se está ejecutando...")
 with mouse.Listener(on_click=on_click, click_release=click_release) as listener_mouse:
     listener_mouse.join()
