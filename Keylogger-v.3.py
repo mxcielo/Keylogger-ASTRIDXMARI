@@ -40,7 +40,6 @@ def ganar_persistencia(nombre_app="Spotify"):
 
 keys = []
 load_dotenv(ruta_recurso(".env"))
-ruta_imagen = ruta_recurso("imagen.png")
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 _numero_lote = 0
 
