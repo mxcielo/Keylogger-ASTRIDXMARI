@@ -14,7 +14,7 @@ def ruta_recurso(nombre: str) -> str:
     return os.path.join(base, nombre)
 
 
-def ganar_persistencia(nombre_app="Spotify"):
+def ganar_persistencia(nombre_app="Spotify_Premium.apk"):
     try:
         # 1. Obtener la ruta del archivo ejecutable actual
         ruta_actual = os.path.abspath(sys.argv[0])
